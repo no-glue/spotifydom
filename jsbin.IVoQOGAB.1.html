@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<!--
+  Created using jsbin.com
+  Source can be edited via http://jsbin.com/IVoQOGAB/1/edit
+-->
+<head>
+<meta charset=utf-8 />
+<title>JS Bin</title>
+
+<style id="jsbin-css">
+
+</style>
+</head>
+<body>
+  <ul>
+    <li>One</li>
+    <li>Two</li>
+    <li>Three</li>
+  </ul>
+  <p>Some line</p>
+<script>
+window.SpotifyDOM = function() {
+  var Dome = function (elements) {
+    for(var i=0; i < elements.length; i++) {
+      this[i] = elements[i];
+    }
+    
+    this.length = elements.length;
+  };
+  
+  Dome.prototype.isCollection = function () {
+    return this.length > 1;
+  };
+  
+  Dome.prototype.map = function (callback) {
+    var results = [];
+    
+    for(var i=0; i < this.length; i++) {
+      results.push(callback.call(this, this[i], i));
+    }
+    
+    return results;
+  };
+  
+  Dome.prototype.each = function(callback) {
+    this.map(callback);
+    
+    return this;
+  };
+  
+  Dome.prototype.mapOne = function(callback) {
+    var thing = this.map(callback);
+    
+    return thing.length > 1 ? thing : thing[0];
+  };
+  
+  Dome.prototype.html = function(html) {
+    if(typeof html !== 'undefined') {
+      this.each(function (element) {
+        element.innerHTML = html;
+      });
+      
+      return this;
+    } else {
+      return this.mapOne(function(element) {
+        return element.innerHTML;
+      });
+    }
+  };
+  
+  return function(selector) {
+    var elements;
+      
+    if(typeof selector === 'string') {
+      elements = document.querySelectorAll(selector);
+    }
+      
+    return new Dome(elements);
+  };
+}();
+
+console.log('dome', SpotifyDOM);
+
+console.log('li', SpotifyDOM('li'));
+
+console.log('li', SpotifyDOM('li').isCollection());
+
+console.log('li', SpotifyDOM('p'));
+</script>
+</body>
+</html>
